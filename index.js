@@ -1,54 +1,59 @@
-const express = require('express')
-const PORT = process.env.PORT || 5000
-var app = express();
-var fire = require('./fire')
-var cors = require('cors');
-var bodyParser = require('body-parser');
+// Copyright 2017 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+'use strict';
+
+// [START gae_node_request_example]
+const express = require('express');
+var url = require('url');
+var q = "";
+const app = express();
 
 app.get('/', (req, res) => {
-    res.send(
-        '<h1>Tes Express & Firebase Cloud Firestore</h1><ul><li><p><b>GET /data/esp8266</b></p></li><li><p><b>GET /data/esp32</b></p></li><li><p><b>GET /data/mkr1000</b></p></li><li><p><b>POST /data/esp8266</b>  => {suhu, lembab, analog}</p></li><li><p><b>POST /data/esp32</b>  => {suhu, lembab, analog}</p></li><li><p><b>POST /data/mkr1000</b>  => {suhu, lembab, analog}</p></li></ul>')
-})
+    res.status(200).send('Hello, world!').end();
+    q = url.parse(req.url, true);
+    if (q.search != null) {
 
-app.get('/data/esp8266', (req, res) => {
-    const db = fire.firestore();
-    db.settings({
-        timestampsInSnapshots: true
-    });
-    var wholeData = []
-    db.collection('lin_esp8266').orderBy('time').get()
-        .then(snapshot => {
-            snapshot.forEach(doc => {
-                wholeData.push(doc.data())
-            });
-            console.log(wholeData)
-            res.send(wholeData)
-        })
-        .catch(error => {
-            console.log('Error!', error);
-        })
-})
+        dataa.quote = q.search.split('=')[0].substring(1);
+        dataa.author = q.search.split('=')[1];
+        db.collection('mohamed').doc('glaoui')
+            .set(dataa).then(() =>
+                console.log('new Dialogue written to database'));
+    }
 
-app.post('/data/esp8266', (req, res) => {
-    const db = fire.firestore();
-    db.settings({
-        timestampsInSnapshots: true
-    });
-    db.collection('Device1').add({
-        current: req.body.current,
-        time: new Date()
-    });
-    res.send({
-        current: req.body.current,
-        time: new Date(),
-        status: 'POST data sukses!'
-    })
-})
+});
+const serviceAccount = require('./fire.js');
+const admin = require('firebase-admin');
+//initialize admin SDK using serciceAcountKey
+admin.initializeApp({
+    credential: admin.credential.cert(config)
+});
+const db = admin.firestore();
+var http = require('https');
+var url = require('url');
+var dataa = {
+    "quote": "",
+    "author": ""
+};
 
+
+// Start the server
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Listening on ${ PORT }`)
-})
+    console.log(`App listening on port ${PORT}`);
+    console.log('Press Ctrl+C to quit.');
+});
+// [END gae_node_request_example]
+
+module.exports = app;
