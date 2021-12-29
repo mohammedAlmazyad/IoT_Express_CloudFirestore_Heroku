@@ -37,9 +37,9 @@ app.get('/data/esp8266', (req, res) => {
 
 app.post('/data/esp8266', (req, res) => {
     const db = fire.firestore();
-    db.settings({
-        timestampsInSnapshots: true
-    });
+    // db.settings({
+    //     timestampsInSnapshots: true
+    // });
     db.collection('Device1').add({
         current: req.body.current,
         time: new Date()
