@@ -5,7 +5,9 @@ var fire = require('./fire')
 var cors = require('cors');
 var bodyParser = require('body-parser');
 
-app.use(cors());
+app.use(cors({
+    origin: '*'
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
