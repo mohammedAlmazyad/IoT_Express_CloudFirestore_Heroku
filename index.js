@@ -36,12 +36,12 @@ app.get('/data/esp8266', (req, res) => {
 })
 
 app.post('/data/esp8266', (req, res) => {
-    console.log(req.body.current);
+    // console.log(req.body.current);
     const db = fire.firestore();
     // db.settings({
     //     timestampsInSnapshots: true
     // });
-    db.collection('Device1').add({
+    db.collection(req.body.deviceId).add({
         current: req.body.current,
         time: new Date()
     });
