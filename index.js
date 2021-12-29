@@ -18,9 +18,9 @@ app.get('/', (req, res) => {
 
 app.get('/data/esp8266', (req, res) => {
     const db = fire.firestore();
-    db.settings({
-        timestampsInSnapshots: true
-    });
+    // db.settings({
+    //     timestampsInSnapshots: true
+    // });
     var wholeData = []
     db.collection('lin_esp8266').orderBy('time').get()
         .then(snapshot => {
