@@ -36,6 +36,7 @@ app.get('/data/esp8266', (req, res) => {
 })
 
 app.post('/data/esp8266', (req, res) => {
+    console.log(req.body.current);
     const db = fire.firestore();
     // db.settings({
     //     timestampsInSnapshots: true
